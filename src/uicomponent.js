@@ -14,15 +14,9 @@ export class UIComponent {
     }
     
     this.element = element;
-    this.init();
 
     // Сохраняем экземпляр с ссылкой на элемент
     this.constructor.instances.set(element, this);
-  }
-
-  // Абстрактный метод - должен быть реализован в наследниках
-  init() {
-    throw new Error('Method "init" must be implemented in derived class');
   }
 
   // Общие методы для всех компонентов

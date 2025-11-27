@@ -1,14 +1,11 @@
 import './card.scss'
+import { UIComponent } from './../../uicomponent.js'
 
 const PREFIX = 'uishka'
 
-export class Card {
+export class Card extends UIComponent {
   constructor(element) {
-    this.element = element
-    this.init()
-  }
-
-  init() {
+    super(element)
     // Можно добавить логику для карточки
     console.log('Card initialized', this.element)
   }

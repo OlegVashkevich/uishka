@@ -10,13 +10,84 @@
         <h1>UIshka</h1>
         
         <h2>Кнопки</h2>
-        <div style="display: flex; gap: 16px; margin-bottom: 32px;">
+        <!-- Основные кнопки -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
             <button class="uishka-btn uishka-btn--primary">Основная</button>
             <button class="uishka-btn uishka-btn--secondary">Вторичная</button>
             <button class="uishka-btn uishka-btn--outline">Контурная</button>
-            <button class="uishka-btn uishka-btn--primary uishka-btn--small">Маленькая</button>
-            <button class="uishka-btn uishka-btn--primary uishka-btn--large">Большая</button>
-            <div class="uishka-btn uishka-btn--primary uishka-btn--large">Большая</div>
+            <button class="uishka-btn uishka-btn--outline-secondary">Контурная вторая</button>
+        </div>
+
+        <!-- Семантические кнопки -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--success">Успех</button>
+            <button class="uishka-btn uishka-btn--danger">Опасность</button>
+            <button class="uishka-btn uishka-btn--warning">Предупреждение</button>
+            <button class="uishka-btn uishka-btn--info">Инфо</button>
+        </div>
+
+        <!-- Контурные семантические -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--outline-success">Контур успех</button>
+            <button class="uishka-btn uishka-btn--outline-danger">Контур опасность</button>
+            <button class="uishka-btn uishka-btn--outline-warning">Контур предупреждение</button>
+            <button class="uishka-btn uishka-btn--outline-info">Контур инфо</button>
+        </div>
+
+        <!-- Светлые и темные -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--light">Светлая</button>
+            <button class="uishka-btn uishka-btn--dark">Темная</button>
+            <button class="uishka-btn uishka-btn--ghost">Призрачная</button>
+            <button class="uishka-btn uishka-btn--ghost-secondary">Призрачная вторая</button>
+        </div>
+
+        <!-- Разные размеры -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; align-items: center;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--sm">Маленькая</button>
+            <button class="uishka-btn uishka-btn--primary uishka-btn--md">Средняя</button>
+            <button class="uishka-btn uishka-btn--primary uishka-btn--lg">Большая</button>
+            <button class="uishka-btn uishka-btn--primary uishka-btn--xl">Очень большая</button>
+        </div>
+
+        <!-- Состояния -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--loading">
+                <span class="uishka-btn__spinner"></span>
+                Загрузка...
+            </button>
+            <button class="uishka-btn uishka-btn--primary" disabled>Отключенная</button>
+            <button class="uishka-btn uishka-btn--disabled">Неактивная</button>
+        </div>
+
+        <!-- Кнопки с иконками -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--with-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                С иконкой
+            </button>
+            <button class="uishka-btn uishka-btn--outline uishka-btn--with-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                Успех
+            </button>
+        </div>
+
+        <!-- Группа кнопок -->
+        <div style="margin-bottom: 32px;">
+            <div class="uishka-btn-group">
+                <button class="uishka-btn uishka-btn--outline">Левая</button>
+                <button class="uishka-btn uishka-btn--outline">Средняя</button>
+                <button class="uishka-btn uishka-btn--outline">Правая</button>
+            </div>
+        </div>
+
+        <!-- Блочная кнопка -->
+        <div style="margin-bottom: 32px;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--block">Блочная кнопка</button>
         </div>
 
         <h2>Карточки</h2>

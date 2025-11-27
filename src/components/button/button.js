@@ -1,9 +1,8 @@
 // Класс для работы с кнопками
 import './button.scss'
+import { UIComponent } from './../../uicomponent.js'
 
 const PREFIX = 'uishka'
-
-import { UIComponent } from './../../uicomponent.js'
 
 export class Button extends UIComponent {
   constructor(element) {
@@ -13,9 +12,7 @@ export class Button extends UIComponent {
     // добавляем счетчик
     this.clickCount = 0
     this.text = this.element.textContent
-  }
 
-  init() {
     console.log('Button initialized', this.element)
     // Добавляем обработчик клика
     this.element.addEventListener('click', this.handleClick.bind(this));
@@ -53,6 +50,6 @@ export class Button extends UIComponent {
 // Автоматическая инициализация всех кнопок с data-ui-button
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.'+ PREFIX +'-btn').forEach(button => {
-    const Btn = new Button(button)
+    new Button(button)
   })
 })
