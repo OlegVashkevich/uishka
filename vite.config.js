@@ -1,6 +1,22 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
+
+const timestamp = Date.now();
+
+const addTimestampPlugin = () => {
+  return {
+    name: 'add-timestamp',
+    transformIndexHtml(html) {
+      // Добавляем timestamp ко всем скриптам и стилям
+      return html
+        .replace(/(src="[^"]*\.js")/g, `$1?t=${timestamp}`)
+        .replace(/(href="[^"]*\.css")/g, `$1?t=${timestamp}`)
+        .replace(/(href="[^"]*\.js")/g, `$1?t=${timestamp}`); // для modulepreload
+    }
+  }
+}
+
 export default defineConfig({
   base: './',
   build: {
@@ -45,6 +61,7 @@ export default defineConfig({
       }
     }
   },
+  plugins: [addTimestampPlugin()],
   server: {
     port: 5173,
     host: true
