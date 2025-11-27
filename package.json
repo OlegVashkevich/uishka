@@ -1,0 +1,21 @@
+{
+  "name": "uishka",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "rollup-plugin-copy": "^3.5.0",
+    "sass": "^1.94.2",
+    "vite": "^4.5.14"
+  },
+  "exports": {
+    ".": "./dist/all.js"
+  },
+  "files": [
+    "dist"
+  ]
+}
