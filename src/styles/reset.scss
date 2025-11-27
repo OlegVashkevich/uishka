@@ -1,46 +1,54 @@
-/* Простой сброс стилей */
-html {
-  line-height: 1.15; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-}
-
-/* Sections
-   ========================================================================== */
-
-/**
- * Remove the margin in all browsers.
+/* 
+ * Простой сброс стилей для нормализации отображения в разных браузерах
+ * Основан на принципах нормализации, а не полного сброса
  */
 
+/* Базовые настройки документа */
+html {
+  line-height: 1.15; /* Устанавливаем базовый межстрочный интервал */
+  -webkit-text-size-adjust: 100%; /* Предотвращает автоматическое изменение размера текста на iOS */
+}
+
+/* 
+ * ==========================================================================
+ * СЕКЦИИ ДОКУМЕНТА
+ * ==========================================================================
+ */
+
+/**
+ * Убирает внешние отступы у body во всех браузерах
+ */
 body {
   margin: 0;
 }
 
 /**
- * Render the `main` element consistently in IE.
+ * Исправляет отображение элемента <main> в Internet Explorer
  */
-
 main {
   display: block;
 }
 
 /**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
+ * Корректирует размер шрифта и отступы для заголовков h1 внутри 
+ * секций и статей в Chrome, Firefox и Safari
  */
-
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
 
-/* Grouping content
-   ========================================================================== */
-
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
+/* 
+ * ==========================================================================
+ * ГРУППИРОВКА КОНТЕНТА
+ * ==========================================================================
  */
 
+/**
+ * Стили для горизонтальной линии (hr)
+ * 1. Корректная модель box-sizing в Firefox
+ * 2. Показывать переполнение в Edge и IE
+ */
 hr {
   box-sizing: content-box; /* 1 */
   height: 0; /* 1 */
@@ -48,31 +56,33 @@ hr {
 }
 
 /**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
+ * Стили для предформатированного текста (pre)
+ * 1. Корректное наследование и масштабирование размера шрифта
+ * 2. Исправление нечеткого размера шрифта в em во всех браузерах
  */
-
 pre {
   font-family: monospace, monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
-/* Text-level semantics
-   ========================================================================== */
-
-/**
- * Remove the gray background on active links in IE 10.
+/* 
+ * ==========================================================================
+ * ТЕКСТОВЫЕ СЕМАНТИЧЕСКИЕ ЭЛЕМЕНТЫ
+ * ==========================================================================
  */
 
+/**
+ * Убирает серый фон у активных ссылок в Internet Explorer 10
+ */
 a {
   background-color: transparent;
 }
 
 /**
- * 1. Remove the bottom border in Chrome 57-
- * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ * Стили для аббревиатур с title атрибутом
+ * 1. Убирает нижнюю границу в Chrome 57 и старее
+ * 2. Добавляет правильное подчеркивание в современных браузерах
  */
-
 abbr[title] {
   border-bottom: none; /* 1 */
   text-decoration: underline; /* 2 */
@@ -81,19 +91,19 @@ abbr[title] {
 }
 
 /**
- * Add the correct font weight in Chrome, Edge, and Safari.
+ * Добавляет правильную толщину шрифта для полужирного текста
+ * в Chrome, Edge и Safari
  */
-
 b,
 strong {
   font-weight: bolder;
 }
 
 /**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
+ * Стили для элементов кода (code, kbd, samp)
+ * 1. Корректное наследование и масштабирование размера шрифта
+ * 2. Исправление нечеткого размера шрифта в em
  */
-
 code,
 kbd,
 samp {
@@ -102,18 +112,17 @@ samp {
 }
 
 /**
- * Add the correct font size in all browsers.
+ * Устанавливает правильный размер шрифта для мелкого текста
+ * во всех браузерах
  */
-
 small {
   font-size: 80%;
 }
 
 /**
- * Prevent `sub` and `sup` elements from affecting the line height in
- * all browsers.
+ * Предотвращает влияние надстрочных (sup) и подстрочных (sub) 
+ * элементов на высоту строки во всех браузерах
  */
-
 sub,
 sup {
   font-size: 75%;
@@ -123,32 +132,37 @@ sup {
 }
 
 sub {
-  bottom: -0.25em;
+  bottom: -0.25em; /* Сдвиг для подстрочного текста */
 }
 
 sup {
-  top: -0.5em;
+  top: -0.5em; /* Сдвиг для надстрочного текста */
 }
 
-/* Embedded content
-   ========================================================================== */
-
-/**
- * Remove the border on images inside links in IE 10.
+/* 
+ * ==========================================================================
+ * ВСТРАИВАЕМЫЙ КОНТЕНТ
+ * ==========================================================================
  */
 
+/**
+ * Убирает границу у изображений внутри ссылок в Internet Explorer 10
+ */
 img {
   border-style: none;
 }
 
-/* Forms
-   ========================================================================== */
-
-/**
- * 1. Change the font styles in all browsers.
- * 2. Remove the margin in Firefox and Safari.
+/* 
+ * ==========================================================================
+ * ФОРМЫ
+ * ==========================================================================
  */
 
+/**
+ * Базовые стили для элементов форм
+ * 1. Изменяет стили шрифтов во всех браузерах для единообразия
+ * 2. Убирает внешние отступы в Firefox и Safari
+ */
 button,
 input,
 optgroup,
@@ -161,40 +175,37 @@ textarea {
 }
 
 /**
- * Show the overflow in IE.
- * 1. Show the overflow in Edge.
+ * Исправление переполнения для кнопок и полей ввода
+ * 1. Показывать переполнение в Edge
  */
-
 button,
 input { /* 1 */
   overflow: visible;
 }
 
 /**
- * Remove the inheritance of text transform in Edge, Firefox, and IE.
- * 1. Remove the inheritance of text transform in Firefox.
+ * Убирает наследование text-transform в Edge, Firefox и IE
+ * 1. Убирает наследование в Firefox
  */
-
 button,
 select { /* 1 */
   text-transform: none;
 }
 
 /**
- * Correct the inability to style clickable types in iOS and Safari.
+ * Исправляет невозможность стилизации кликабельных типов 
+ * в iOS и Safari
  */
-
 button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  -webkit-appearance: button;
+  appearance: button;
 }
 
 /**
- * Remove the inner border and padding in Firefox.
+ * Убирает внутреннюю границу и отступы в Firefox
  */
-
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
@@ -204,9 +215,8 @@ button::-moz-focus-inner,
 }
 
 /**
- * Restore the focus styles unset by the previous rule.
+ * Восстанавливает стили фокуса, сброшенные предыдущим правилом
  */
-
 button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
@@ -215,20 +225,19 @@ button:-moz-focusring,
 }
 
 /**
- * Correct the padding in Firefox.
+ * Корректирует отступы для fieldset в Firefox
  */
-
 fieldset {
   padding: 0.35em 0.75em 0.625em;
 }
 
 /**
- * 1. Correct the text wrapping in Edge and IE.
- * 2. Correct the color inheritance from `fieldset` elements in IE.
- * 3. Remove the padding so developers are not caught out when they zero out
- *    `fieldset` elements in all browsers.
+ * Стили для легенды fieldset
+ * 1. Исправляет перенос текста в Edge и IE
+ * 2. Корректное наследование цвета от fieldset в IE
+ * 3. Убирает отступы, чтобы разработчики не были сбиты с толку
+ *    при обнулении fieldset во всех браузерах
  */
-
 legend {
   box-sizing: border-box; /* 1 */
   color: inherit; /* 2 */
@@ -239,26 +248,25 @@ legend {
 }
 
 /**
- * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ * Добавляет правильное вертикальное выравнивание в 
+ * Chrome, Firefox и Opera
  */
-
 progress {
   vertical-align: baseline;
 }
 
 /**
- * Remove the default vertical scrollbar in IE 10+.
+ * Убирает вертикальную полосу прокрутки по умолчанию в IE 10+
  */
-
 textarea {
   overflow: auto;
 }
 
 /**
- * 1. Add the correct box sizing in IE 10.
- * 2. Remove the padding in IE 10.
+ * Стили для чекбоксов и радиокнопок
+ * 1. Правильная модель box-sizing в IE 10
+ * 2. Убирает отступы в IE 10
  */
-
 [type="checkbox"],
 [type="radio"] {
   box-sizing: border-box; /* 1 */
@@ -266,57 +274,57 @@ textarea {
 }
 
 /**
- * Correct the cursor style of increment and decrement buttons in Chrome.
+ * Корректирует стиль курсора для кнопок увеличения/уменьшения
+ * в Chrome
  */
-
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
 
 /**
- * 1. Correct the odd appearance in Chrome and Safari.
- * 2. Correct the outline style in Safari.
+ * Стили для поля поиска
+ * 1. Исправляет странный внешний вид в Chrome и Safari
+ * 2. Корректирует стиль outline в Safari
  */
-
 [type="search"] {
-  -webkit-appearance: textfield; /* 1 */
+  appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
 
 /**
- * Remove the inner padding in Chrome and Safari on macOS.
+ * Убирает внутренние отступы в Chrome и Safari на macOS
  */
-
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
 /**
- * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to `inherit` in Safari.
+ * Стили для кнопки загрузки файлов
+ * 1. Исправляет невозможность стилизации кликабельных типов в iOS и Safari
+ * 2. Изменяет свойства шрифта на наследование в Safari
  */
-
 ::-webkit-file-upload-button {
   -webkit-appearance: button; /* 1 */
   font: inherit; /* 2 */
 }
 
-/* Interactive
-   ========================================================================== */
-
-/*
- * Add the correct display in Edge, IE 10+, and Firefox.
+/* 
+ * ==========================================================================
+ * ИНТЕРАКТИВНЫЕ ЭЛЕМЕНТЫ
+ * ==========================================================================
  */
 
+/**
+ * Добавляет правильное отображение в Edge, IE 10+ и Firefox
+ */
 details {
   display: block;
 }
 
-/*
- * Add the correct display in all browsers.
+/**
+ * Добавляет правильное отображение во всех браузерах
  */
-
 summary {
   display: list-item;
 }

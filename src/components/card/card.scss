@@ -2,33 +2,33 @@
 .card {
   background: white;
   border-radius: var(--border-radius-md);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: box-shadow 0.3s ease;
-}
 
-.card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
 
-.card__header {
-  padding: var(--spacing-lg);
-  border-bottom: 1px solid #f0f0f0;
-  background-color: #f8f9fa;
-}
+  &__header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #f8f9fa;
+  }
 
-.card__title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-}
+  &__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
 
-.card__body {
-  padding: var(--spacing-lg);
-}
+  &__body {
+    padding: var(--spacing-lg);
+  }
 
-.card__footer {
-  padding: var(--spacing-lg);
-  border-top: 1px solid #f0f0f0;
-  background-color: #f8f9fa;
+  &__footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid #f0f0f0;
+    background-color: #f8f9fa;
+  }
 }
