@@ -15,6 +15,7 @@ export default defineConfig({
         // Стили
         variables: resolve(__dirname, 'src/styles/variables.scss'),
         reset: resolve(__dirname, 'src/styles/reset.scss'),
+        animations: resolve(__dirname, 'src/styles/animations.scss'),
         // Компоненты
         button: resolve(__dirname, 'src/components/button/button.js'),
         card: resolve(__dirname, 'src/components/card/card.js'),
@@ -35,6 +36,9 @@ export default defineConfig({
           }
           if (assetInfo.name === 'reset.css') {
             return 'reset.css'
+          }
+          if (assetInfo.name === 'animations.css') {
+            return 'animations.css'
           }
           return 'components/[name][extname]'
         }

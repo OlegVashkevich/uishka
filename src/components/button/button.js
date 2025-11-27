@@ -12,13 +12,13 @@ export class Button extends UIComponent {
     
     // добавляем счетчик
     this.clickCount = 0
+    this.text = this.element.textContent
   }
 
   init() {
     console.log('Button initialized', this.element)
     // Добавляем обработчик клика
     this.element.addEventListener('click', this.handleClick.bind(this));
-    this.element.classList.add('ui-button');
   }
 
   handleClick(event) {
@@ -29,7 +29,6 @@ export class Button extends UIComponent {
     this.clickCount++
     const uievent = new CustomEvent('ui-button-click', {
       detail: { 
-        element: this.element,
         timestamp: Date.now(),
         component: this
       },
@@ -37,27 +36,17 @@ export class Button extends UIComponent {
     })
     this.element.dispatchEvent(uievent)
   }
-  /*
-  // Включить кнопку
-  enable() {
-    this.element.disabled = false
-  }
-
-  // Выключить кнопку
-  disable() {
-    this.element.disabled = true
-  }
-  */
   // Показать загрузку
   loading() {
+    this.text = this.element.textContent
     this.element.innerHTML = 'Загрузка...'
-    this.element.disabled = true
+    this.disable()
   }
 
   // Вернуть исходный текст
-  reset(text = null) {
-    if (text) this.element.textContent = text
-    this.element.disabled = false
+  reset() {
+    this.element.textContent = this.text
+    this.enable()
   }
 }
 

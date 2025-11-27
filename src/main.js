@@ -1,6 +1,7 @@
 // Импортируем стили
 import './styles/variables.scss'
 import './styles/reset.scss'
+import './styles/animations.scss'
 
 // Импортируем компоненты
 import './components/button/button.js'

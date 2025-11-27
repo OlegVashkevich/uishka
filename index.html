@@ -16,6 +16,7 @@
             <button class="uishka-btn uishka-btn--outline">Контурная</button>
             <button class="uishka-btn uishka-btn--primary uishka-btn--small">Маленькая</button>
             <button class="uishka-btn uishka-btn--primary uishka-btn--large">Большая</button>
+            <div class="uishka-btn uishka-btn--primary uishka-btn--large">Большая</div>
         </div>
 
         <h2>Карточки</h2>
@@ -43,11 +44,22 @@
         </div>
     </div>
     <script type="module" src="/src/main.js"></script>
-    <script>
+    <script type="module">
+        import { Button } from './src/main.js'
+        // Новый метод для анимации
+        Button.prototype.pulse = function() {
+            this.element.style.animation = 'pulse 1s infinite';
+            setTimeout(() => {
+                this.element.style.animation = '';
+                this.reset();
+            }, 3000);
+        }
         // Тестируем обработчики событий
         document.addEventListener('ui-button-click', (event) => {
-            console.log('Кнопка нажата!', event.detail.element)
+            console.log('Кнопка нажата!', event.detail.component.element)
             console.log(`Кнопка нажата ${event.detail.component.clickCount} раз`)
+            event.detail.component.loading();
+            event.detail.component.pulse();
         })
     </script>
 </body>
