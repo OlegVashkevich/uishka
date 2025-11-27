@@ -10,7 +10,7 @@
   "devDependencies": {
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.94.2",
-    "vite": "^4.5.14"
+    "vite": "^7.2.4"
   },
   "exports": {
     ".": "./dist/all.js"

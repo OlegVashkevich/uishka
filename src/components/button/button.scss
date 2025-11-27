@@ -1,61 +1,62 @@
+@use  './../../styles/config' as *;
 /* Стили кнопки */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: var(--border-radius-md);
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  line-height: 1;
+.#{$prefix}-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    line-height: 1;
 
-  /* Варианты кнопок */
-  &--primary {
-    background-color: var(--color-primary);
-    color: white;
-  }
+    /* Варианты кнопок */
+    &--primary {
+        background-color: var(--color-primary);
+        color: white;
+    }
 
-  &--secondary {
-    background-color: var(--color-secondary);
-    color: white;
-  }
+    &--secondary {
+        background-color: var(--color-secondary);
+        color: white;
+    }
 
-  &--outline {
-    background-color: transparent;
-    border: 2px solid var(--color-primary);
-    color: var(--color-primary);
-  }
+    &--outline {
+        background-color: transparent;
+        border: 2px solid var(--color-primary);
+        color: var(--color-primary);
+    }
 
-  /* Размеры */
-  &--small {
-    padding: 8px 16px;
-    font-size: 12px;
-  }
+    /* Размеры */
+    &--small {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
 
-  &--large {
-    padding: 16px 32px;
-    font-size: 16px;
-  }
+    &--large {
+        padding: 16px 32px;
+        font-size: 16px;
+    }
 
-  /* Состояния */
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+    /* Состояния */
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-  &:active {
-    transform: translateY(0);
-  }
+    &:active {
+        transform: translateY(0);
+    }
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
 }

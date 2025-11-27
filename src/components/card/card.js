@@ -1,5 +1,7 @@
 import './card.scss'
 
+const PREFIX = 'uishka'
+
 export class Card {
   constructor(element) {
     this.element = element
@@ -14,7 +16,7 @@ export class Card {
 
 // Автоматическая инициализация
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[data-ui-card]').forEach(card => {
+  document.querySelectorAll('.'+ PREFIX +'-card').forEach(card => {
     new Card(card)
   })
 })
