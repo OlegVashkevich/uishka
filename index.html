@@ -5,57 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UIshka Library - Dev</title>
   <script type="module" crossorigin src="./all.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/uicomponent-D7atpI9_.js">
   <link rel="modulepreload" crossorigin href="./components/button.js">
   <link rel="modulepreload" crossorigin href="./components/card.js">
-  <link rel="stylesheet" href="./components/button.css">
-  <link rel="stylesheet" href="./components/card.css">
-  <link rel="stylesheet" href="./variables.css">
-  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" crossorigin href="./components/button.css">
+  <link rel="stylesheet" crossorigin href="./components/card.css">
+  <link rel="stylesheet" crossorigin href="./variables.css">
+  <link rel="stylesheet" crossorigin href="./reset.css">
+  <link rel="stylesheet" crossorigin href="./animations.css">
 </head>
 <body>
     <div style="padding: 40px; max-width: 800px; margin: 0 auto;">
         <h1>UIshka</h1>
         
         <h2>Кнопки</h2>
-        <div style="display: flex; gap: 16px; margin-bottom: 32px;">
-            <button class="btn btn--primary" data-ui-button>Основная</button>
-            <button class="btn btn--secondary" data-ui-button>Вторичная</button>
-            <button class="btn btn--outline" data-ui-button>Контурная</button>
-            <button class="btn btn--primary btn--small" data-ui-button>Маленькая</button>
-            <button class="btn btn--primary btn--large" data-ui-button>Большая</button>
+        <!-- Основные кнопки -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--primary">Основная</button>
+            <button class="uishka-btn uishka-btn--secondary">Вторичная</button>
+            <button class="uishka-btn uishka-btn--outline">Контурная</button>
+            <button class="uishka-btn uishka-btn--outline-secondary">Контурная вторая</button>
+        </div>
+
+        <!-- Семантические кнопки -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--success">Успех</button>
+            <button class="uishka-btn uishka-btn--danger">Опасность</button>
+            <button class="uishka-btn uishka-btn--warning">Предупреждение</button>
+            <button class="uishka-btn uishka-btn--info">Инфо</button>
+        </div>
+
+        <!-- Контурные семантические -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--outline-success">Контур успех</button>
+            <button class="uishka-btn uishka-btn--outline-danger">Контур опасность</button>
+            <button class="uishka-btn uishka-btn--outline-warning">Контур предупреждение</button>
+            <button class="uishka-btn uishka-btn--outline-info">Контур инфо</button>
+        </div>
+
+        <!-- Светлые и темные -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--light">Светлая</button>
+            <button class="uishka-btn uishka-btn--dark">Темная</button>
+            <button class="uishka-btn uishka-btn--ghost">Призрачная</button>
+            <button class="uishka-btn uishka-btn--ghost-secondary">Призрачная вторая</button>
+        </div>
+
+        <!-- Разные размеры -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; align-items: center;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--sm">Маленькая</button>
+            <button class="uishka-btn uishka-btn--primary uishka-btn--md">Средняя</button>
+            <button class="uishka-btn uishka-btn--primary uishka-btn--lg">Большая</button>
+            <button class="uishka-btn uishka-btn--primary uishka-btn--xl">Очень большая</button>
+        </div>
+
+        <!-- Состояния -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--loading">
+                <span class="uishka-btn__spinner"></span>
+                Загрузка...
+            </button>
+            <button class="uishka-btn uishka-btn--primary" disabled>Отключенная</button>
+            <button class="uishka-btn uishka-btn--disabled">Неактивная</button>
+        </div>
+
+        <!-- Кнопки с иконками -->
+        <div style="display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--with-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                С иконкой
+            </button>
+            <button class="uishka-btn uishka-btn--outline uishka-btn--with-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                Успех
+            </button>
+        </div>
+
+        <!-- Группа кнопок -->
+        <div style="margin-bottom: 32px;">
+            <div class="uishka-btn-group">
+                <button class="uishka-btn uishka-btn--outline">Левая</button>
+                <button class="uishka-btn uishka-btn--outline">Средняя</button>
+                <button class="uishka-btn uishka-btn--outline">Правая</button>
+            </div>
+        </div>
+
+        <!-- Блочная кнопка -->
+        <div style="margin-bottom: 32px;">
+            <button class="uishka-btn uishka-btn--primary uishka-btn--block">Блочная кнопка</button>
         </div>
 
         <h2>Карточки</h2>
         <div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-            <div class="card" data-ui-card>
-                <div class="card__header">
-                    <h3 class="card__title">Заголовок карточки</h3>
+            <div class="uishka-card">
+                <div class="uishka-card__header">
+                    <h3 class="uishka-card__title">Заголовок карточки</h3>
                 </div>
-                <div class="card__body">
+                <div class="uishka-card__body">
                     <p>Содержимое карточки. Здесь может быть любой контент.</p>
                 </div>
             </div>
             
-            <div class="card" data-ui-card>
-                <div class="card__header">
-                    <h3 class="card__title">Другая карточка</h3>
+            <div class="uishka-card">
+                <div class="uishka-card__header">
+                    <h3 class="uishka-card__title">Другая карточка</h3>
                 </div>
-                <div class="card__body">
+                <div class="uishka-card__body">
                     <p>Еще одно содержимое карточки.</p>
                 </div>
-                <div class="card__footer">
-                    <button class="btn btn--primary" data-ui-button>Действие</button>
+                <div class="uishka-card__footer">
+                    <button class="uishka-btn uishka-btn--primary">Действие</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script>
-        // Тестируем обработчики событий
-        document.addEventListener('ui-button-click', (event) => {
-            console.log('Кнопка нажата!', event.detail.element)
-            console.log(`Кнопка нажата ${event.detail.component.clickCount} раз`)
-        })
-    </script>
 </body>
 </html>
