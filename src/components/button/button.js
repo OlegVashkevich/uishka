@@ -13,7 +13,7 @@ export class Button extends UIComponent {
     this.clickCount = 0
     this.text = this.element.textContent
 
-    console.log('Button initialized', this.element)
+    //console.log('Button initialized', this.element)
     // Добавляем обработчик клика
     this.element.addEventListener('click', this.handleClick.bind(this));
   }
