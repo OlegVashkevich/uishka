@@ -1,148 +1,200 @@
-// Базовый абстрактный класс для всех UI компонентов
+/**
+ * Базовый абстрактный класс для всех UI компонентов
+ * @abstract
+ */
 export class UIComponent {
-  // Хранилище всех экземпляров (общее для всех наследников)
+  /**
+   * Map всех экземпляров компонентов (статическое, общее для всех наследников)
+   * @type {Map<Element, UIComponent>}
+   */
   static instances = new Map();
   
+  /**
+   * Создает экземпляр UI компонента
+   * @param {Element} element - DOM элемент, к которому привязывается компонент
+   * @throws {Error} Если попытаться создать экземпляр UIComponent напрямую
+   */
   constructor(element) {
     if (this.constructor === UIComponent) {
       throw new Error('UIComponent is abstract and cannot be instantiated directly');
     }
 
-    // Инициализируем instances если его еще нет
+    // Инициализируем instances если его еще нет у наследника
     if (!this.constructor.instances) {
       this.constructor.instances = new Map();
     }
     
+    /**
+     * DOM элемент компонента
+     * @type {Element}
+     */
     this.element = element;
-    
-    // Инициализация системы реактивных свойств
-    this._propertiesConfig = this.getPropertiesConfig?.() || {};
-    this._reactiveProperties = {};
-    
-    // Инициализируем реактивные свойства если есть конфигурация
-    if (Object.keys(this._propertiesConfig).length > 0) {
-      Object.keys(this._propertiesConfig).forEach(property => {
-        this._reactiveProperties[property] = this.getInitialValue(property);
-      });
-      this.setupReactivity();
-    }
 
-    // Сохраняем экземпляр с ссылкой на элемент
+    /**
+     * Конфигурация реактивных свойств
+     * @type {Object}
+     * @private
+     */
+    this._propertiesConfig = {};
+
+    /**
+     * Хранилище значений реактивных свойств
+     * @type {Object}
+     * @private
+     */
+    this._reactiveProperties = {};
+
+    // Сохраняем экземпляр
     this.constructor.instances.set(element, this);
   }
 
-  // Метод для создания конфигурации свойств (должен быть переопределен в наследниках)
-  getPropertiesConfig() {
-    return {};
-  }
-  
-  // Создаем методы update и get на основе указанного свойства DOM
-  createDOMethods(propertyName) {
-    const config = this._propertiesConfig[propertyName];
-    if (!config) return null;
+  /**
+   * Добавляет реактивное свойство к компоненту
+   * @param {string} name - Имя свойства
+   * @param {string} selector - CSS селектор для поиска элемента в DOM этого компонента
+   * @param {string} [propertyType='textContent'] - Тип свойства: 
+   *        'textContent' | 'innerHTML' | имя атрибута (например: 'src', 'href', 'data-*')
+   * @returns {this} Возвращает this для цепочки вызовов
+   * @example
+   * // Текстовое свойство
+   * this.addReactiveProperty('title', '.card__title', 'textContent');
+   * // HTML свойство
+   * this.addReactiveProperty('content', '.card__content', 'innerHTML');
+   * // Свойство-атрибут
+   * this.addReactiveProperty('imageSrc', '.card__img', 'src');
+   */
+  addReactiveProperty(name, selector, propertyType = 'textContent') {
+    this._propertiesConfig[name] = [selector, propertyType];
+    this._reactiveProperties[name] = this._getInitialValue(name);
     
-    // Если указано свойство DOM элемента (textContent, innerHTML и т.д.)
-    if (config.domProperty) {
-      return {
-        update: (element, value) => element[config.domProperty] = value,
-        get: (element) => element?.[config.domProperty] || ''
-      };
-    }
-    
-    // Если переданы кастомные методы (обратная совместимость)
-    if (config.update && config.get) {
-      return {
-        update: config.update,
-        get: config.get
-      };
-    }
-    
-    return null;
-  }
-  
-  getInitialValue(property) {
-    const methods = this.createDOMethods(property);
-    if (!methods) return '';
-    
-    const config = this._propertiesConfig[property];
-    const element = this.element.querySelector(config.selector);
-    return methods.get(element);
-  }
-  
-  setupReactivity() {
-    Object.keys(this._reactiveProperties).forEach(property => {
-      Object.defineProperty(this, property, {
-        get: () => this._reactiveProperties[property],
-        set: (value) => {
-          if (this._reactiveProperties[property] !== value) {
-            this._reactiveProperties[property] = value;
-            this.updatePropertyInDOM(property, value);
-          }
-        }
-      });
-    });
-  }
-  
-  updatePropertyInDOM(property, value) {
-    const methods = this.createDOMethods(property);
-    if (!methods) return;
-    
-    const config = this._propertiesConfig[property];
-    const element = this.element.querySelector(config.selector);
-    if (element) {
-      methods.update(element, value);
-    }
-  }
-  
-  // Добавление новых свойств динамически
-  addReactiveProperty(name, config) {
-    this._propertiesConfig[name] = config;
-    this._reactiveProperties[name] = this.getInitialValue(name);
-    
-    // Переопределяем свойство
     Object.defineProperty(this, name, {
       get: () => this._reactiveProperties[name],
       set: (value) => {
         if (this._reactiveProperties[name] !== value) {
           this._reactiveProperties[name] = value;
-          this.updatePropertyInDOM(name, value);
+          this._updatePropertyInDOM(name, value);
         }
       }
     });
+    return this;
   }
 
-  // Общие методы для всех компонентов
+  /**
+   * Получает начальное значение свойства из DOM
+   * @param {string} property - Имя свойства
+   * @returns {string} Начальное значение
+   * @private
+   */
+  _getInitialValue(property) {
+    const config = this._propertiesConfig[property];
+    
+    if (Array.isArray(config)) {
+      const [selector, propertyType] = config;
+      const element = this.element.querySelector(selector);
+      
+      if (!element) return '';
+      
+      switch(propertyType) {
+        case 'innerHTML':
+          return element.innerHTML || '';
+        case 'textContent':
+          return element.textContent || '';
+        default:
+          // Все остальные случаи считаем атрибутами
+          return element.getAttribute(propertyType) || '';
+      }
+    }
+    
+    return '';
+  }
+
+  /**
+   * Обновляет значение свойства в DOM
+   * @param {string} property - Имя свойства
+   * @param {string} value - Новое значение
+   * @private
+   */
+  _updatePropertyInDOM(property, value) {
+    const config = this._propertiesConfig[property];
+    if (!config) return;
+    
+    if (Array.isArray(config)) {
+      const [selector, propertyType] = config;
+      const element = this.element.querySelector(selector);
+      if (!element) return;
+      
+      switch(propertyType) {
+        case 'innerHTML':
+          element.innerHTML = value;
+          break;
+        case 'textContent':
+          element.textContent = value;
+          break;
+        default:
+          // Все остальные случаи считаем атрибутами
+          element.setAttribute(propertyType, value);
+      }
+    }
+  }
+
+  /**
+   * Показывает компонент (убирает display: none)
+   */
   show() {
     this.element.style.display = '';
   }
 
+  /**
+   * Скрывает компонент (устанавливает display: none)
+   */
   hide() {
     this.element.style.display = 'none';
   }
 
+  /**
+   * Включает компонент (убирает атрибут disabled)
+   */
   enable() {
     this.element.disabled = false;
   }
 
+  /**
+   * Отключает компонент (устанавливает атрибут disabled)
+   */
   disable() {
     this.element.disabled = true;
   }
 
-  // Статические методы (общие для всех наследников)
+  /**
+   * Получает экземпляр компонента по DOM элементу
+   * @param {Element} element - DOM элемент
+   * @returns {UIComponent|null} Экземпляр компонента или null
+   */
   static getInstance(element) {
     return this.instances?.get(element);
   }
   
+  /**
+   * Получает экземпляр компонента по CSS селектору
+   * @param {string} selector - CSS селектор
+   * @returns {UIComponent|null} Экземпляр компонента или null
+   */
   static getBySelector(selector) {
     const element = document.querySelector(selector);
     return element ? this.instances.get(element) : null;
   }
   
+  /**
+   * Получает все экземпляры компонента
+   * @returns {UIComponent[]} Массив экземпляров
+   */
   static getAll() {
     return this.instances ? Array.from(this.instances.values()) : [];
   }
 
-  // Уничтожение компонента
+  /**
+   * Уничтожает компонент, удаляя его из хранилища экземпляров
+   */
   destroy() {
     this.constructor.instances?.delete(this.element);
   }
