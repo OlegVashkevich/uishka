@@ -3,11 +3,8 @@
  * @abstract
  */
 export class Base {
-    /**
-     * Map всех экземпляров компонентов (статическое, общее для всех наследников)
-     * @type {Map<Element, Base>}
-     */
-    static instances = new Map();
+
+    static instances = {};
 
     /**
      * Создает экземпляр UI компонента
@@ -21,7 +18,12 @@ export class Base {
 
         // Инициализируем instances если его еще нет у наследника
         if (!this.constructor.instances) {
-            this.constructor.instances = new Map();
+            this.constructor.instances = {};
+        }
+
+        // Инициализируем instances если его еще нет у наследника
+        if (!this.constructor.instances[this.constructor.name]) {
+            this.constructor.instances[this.constructor.name] = new Map();
         }
 
         /**
@@ -31,7 +33,7 @@ export class Base {
         this.element = element;
 
         // Сохраняем экземпляр
-        this.constructor.instances.set(element, this);
+        this.constructor.instances[this.constructor.name].set(element, this);
     }
 
     /**
@@ -126,7 +128,7 @@ export class Base {
      * @returns {Base|null} Экземпляр компонента или null
      */
     static getInstance(element) {
-        return this.instances?.get(element);
+        return this.instances[this.name]?.get(element);
     }
 
     /**
@@ -136,7 +138,7 @@ export class Base {
      */
     static getBySelector(selector) {
         const element = document.querySelector(selector);
-        return element ? this.instances.get(element) : null;
+        return element ? this.instances[this.name].get(element) : null;
     }
 
     /**
@@ -149,7 +151,7 @@ export class Base {
         const instances = [];
 
         elements.forEach(element => {
-            const instance = this.instances.get(element);
+            const instance = this.instances[this.name].get(element);
             if (instance) {
                 instances.push(instance);
             }
@@ -163,14 +165,14 @@ export class Base {
      * @returns {Base[]} Массив экземпляров
      */
     static getAll() {
-        return this.instances ? Array.from(this.instances.values()) : [];
+        return this.instances[this.name] ? Array.from(this.instances[this.name].values()) : [];
     }
 
     /**
      * Уничтожает компонент, удаляя его из хранилища экземпляров
      */
     destroy() {
-        this.constructor.instances?.delete(this.element);
+        this.constructor.instances[this.name]?.delete(this.element);
     }
 
     /**

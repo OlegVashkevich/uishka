@@ -146,6 +146,7 @@
                     cardInstance.addReactiveProperty('datatest', 'this', 'data-testattr')
 
                     console.log(cardInstance)
+                    console.log(cardInstance.constructor.instances)
                     // Изменение title автоматически обновит DOM
                     cardInstance.reactive.title = 'Новый заголовок карточки'
 
