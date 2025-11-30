@@ -19,20 +19,20 @@ import { UIComponent } from '/src/uicomponent.js'
 const PREFIX = 'uishka'
 
 export class Card extends UIComponent {
-  /**
-   * Создает экземпляр карточки
-   * @param {HTMLElement} element - DOM элемент карточки
-   */
-  constructor(element) {
-    super(element);
-
     /**
-     * Добавляет реактивное свойство для заголовка карточки
-     * @type {ReactiveProperty}
+     * Создает экземпляр карточки
+     * @param {HTMLElement} element - DOM элемент карточки
      */
-    this.addReactiveProperty('title', `.${PREFIX}-card__title`, 'textContent');
-    console.log('Card initialized', this.element);
-  }
+    constructor(element) {
+        super(element);
+
+        /**
+         * Добавляет реактивное свойство для заголовка карточки
+         * @type {ReactiveProperty}
+         */
+        this.addReactiveProperty('title', '.' + PREFIX + '-card__title', 'textContent');
+        console.log('Card initialized', this.element);
+    }
 }
 
 /**
@@ -42,19 +42,7 @@ export class Card extends UIComponent {
  * и добавляет реактивные свойства для различных частей карточки
  */
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.'+ PREFIX +'-card').forEach(card => {
-    new Card(card)
-        /** @type {ReactiveProperty} - Свойство для тела карточки */
-        .addReactiveProperty('body', `.${PREFIX}-card__body`, 'innerHTML')
-        /** @type {ReactiveProperty} - Свойство для футера карточки */
-        .addReactiveProperty('footer', `.${PREFIX}-card__footer`, 'innerHTML')
-        /** @type {ReactiveProperty} - Свойство для описания карточки */
-        .addReactiveProperty('description', `.${PREFIX}-card__desc`, 'innerHTML')
-        /** @type {ReactiveProperty} - Свойство для цены кнопки */
-        .addReactiveProperty('buttonPrice', `.${PREFIX}-btn`, 'data-btn-price')
-        /** @type {ReactiveProperty} - Свойство для источника изображения */
-        .addReactiveProperty('imageSrc', `.${PREFIX}-card__img`, 'src')
-        /** @type {ReactiveProperty} - Свойство для ссылки карточки */
-        .addReactiveProperty('linkHref', `.${PREFIX}-card__link`, 'href');
-  });
+    document.querySelectorAll('.' + PREFIX + '-card').forEach(card => {
+        new Card(card)
+    });
 });

@@ -102,7 +102,7 @@
                 <div class="uishka-card__footer"></div>
             </div>
             
-            <div class="uishka-card">
+            <div class="uishka-card" data-testattr="test">
                 <div class="uishka-card__header">
                     <h3 class="uishka-card__title">Другая карточка</h3>
                 </div>
@@ -118,6 +118,7 @@
     <script type="module" src="/src/main.js"></script>
     <script type="module">
         import { Button, Card } from './src/main.js'
+        
         // Новый метод для анимации
         Button.prototype.pulse = function() {
             this.element.style.animation = 'pulse 1s infinite';
@@ -129,22 +130,34 @@
         // Тестируем обработчики событий
         document.addEventListener('ui-button-click', (event) => {
             console.log('Кнопка нажата!', event.detail.component.element)
-            console.log(`Кнопка нажата ${event.detail.component.clickCount} раз`)
+            console.log('Кнопка нажата ${event.detail.component.clickCount} раз')
             event.detail.component.loading();
             event.detail.component.pulse();
         })
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
-                const cardInstance = Card.getBySelector('.uishka-card');
-                console.log(cardInstance)
-                // Изменение title автоматически обновит DOM
-                cardInstance.title = 'Новый заголовок карточки'
+                Card.getAllBySelector('.uishka-card').forEach(cardInstance => {
 
-                // Получение текущего значения
-                console.log(cardInstance.title) // 'Новый заголовок карточки'
+                    // Свойство для тела карточки
+                    cardInstance.addReactiveProperty('body', '.uishka-card__body', 'innerHTML')
+                    // Свойство для футера карточки
+                    cardInstance.addReactiveProperty('footer', '.uishka-card__footer', 'innerHTML')
+                    // Атрибут карточки
+                    cardInstance.addReactiveProperty('datatest', 'this', 'data-testattr')
 
-                cardInstance.body = '<p>Новое содержимое карточки.</p><p>Новое содержимое карточки.</p>'
-                cardInstance.footer = '<p>Содержимое карточки. Здесь может быть любой контент.</p>'
+                    console.log(cardInstance)
+                    // Изменение title автоматически обновит DOM
+                    cardInstance.title = 'Новый заголовок карточки'
+
+                    // Получение текущего значения
+                    console.log(cardInstance.title) // 'Новый заголовок карточки'
+
+                    cardInstance.body = '<p>Новое содержимое карточки.</p><p>Новое содержимое карточки.</p>'
+                    cardInstance.footer = '<p>Содержимое карточки. Здесь может быть любой контент.</p>'
+
+                    // Атрибут карточки
+                    cardInstance.datatest = "test2"
+                });
             }, 5000);
         })
     </script>
