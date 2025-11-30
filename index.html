@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UIshka Library - Dev</title>
-  <script type="module" crossorigin src="./all.js"?t=1764257066740></script>
-  <link rel="modulepreload" crossorigin href="./assets/uicomponent-D7atpI9_.js"?t=1764257066740>
-  <link rel="modulepreload" crossorigin href="./components/button.js"?t=1764257066740>
-  <link rel="modulepreload" crossorigin href="./components/card.js"?t=1764257066740>
-  <link rel="stylesheet" crossorigin href="./components/button.css"?t=1764257066740>
-  <link rel="stylesheet" crossorigin href="./components/card.css"?t=1764257066740>
-  <link rel="stylesheet" crossorigin href="./variables.css"?t=1764257066740>
-  <link rel="stylesheet" crossorigin href="./reset.css"?t=1764257066740>
-  <link rel="stylesheet" crossorigin href="./animations.css"?t=1764257066740>
+  <script type="module" crossorigin src="./all.js?t=1764501230628"></script>
+  <link rel="modulepreload" crossorigin href="./components/base.js?t=1764501230628">
+  <link rel="modulepreload" crossorigin href="./components/button.js?t=1764501230628">
+  <link rel="modulepreload" crossorigin href="./components/card.js?t=1764501230628">
+  <link rel="stylesheet" crossorigin href="./components/button.css?t=1764501230628">
+  <link rel="stylesheet" crossorigin href="./components/card.css?t=1764501230628">
+  <link rel="stylesheet" crossorigin href="./variables.css?t=1764501230628">
+  <link rel="stylesheet" crossorigin href="./reset.css?t=1764501230628">
+  <link rel="stylesheet" crossorigin href="./animations.css?t=1764501230628">
 </head>
 <body>
     <div style="padding: 40px; max-width: 800px; margin: 0 auto;">
@@ -108,9 +108,10 @@
                 <div class="uishka-card__body">
                     <p>Содержимое карточки. Здесь может быть любой контент.</p>
                 </div>
+                <div class="uishka-card__footer"></div>
             </div>
             
-            <div class="uishka-card">
+            <div class="uishka-card" data-testattr="test">
                 <div class="uishka-card__header">
                     <h3 class="uishka-card__title">Другая карточка</h3>
                 </div>
@@ -118,7 +119,7 @@
                     <p>Еще одно содержимое карточки.</p>
                 </div>
                 <div class="uishka-card__footer">
-                    <button class="uishka-btn uishka-btn--primary">Действие</button>
+                    <button class="uishka-btn uishka-btn--primary" data-btn-price="0">Действие</button>
                 </div>
             </div>
         </div>
