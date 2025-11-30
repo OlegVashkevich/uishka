@@ -3,9 +3,6 @@
  * @abstract
  */
 export class Base {
-
-    static instances = {};
-
     /**
      * Создает экземпляр UI компонента
      * @param {Element} element - DOM элемент, к которому привязывается компонент
@@ -18,12 +15,7 @@ export class Base {
 
         // Инициализируем instances если его еще нет у наследника
         if (!this.constructor.instances) {
-            this.constructor.instances = {};
-        }
-
-        // Инициализируем instances если его еще нет у наследника
-        if (!this.constructor.instances[this.constructor.name]) {
-            this.constructor.instances[this.constructor.name] = new Map();
+            this.constructor.instances = new Map();
         }
 
         /**
@@ -33,7 +25,38 @@ export class Base {
         this.element = element;
 
         // Сохраняем экземпляр
-        this.constructor.instances[this.constructor.name].set(element, this);
+        this.constructor.instances.set(element, this);
+
+        // Наблюдаем только за непосредственным родителем
+        this.setupParentObserver(element.parentElement);
+    }
+
+
+    /**
+     * Наблюдение за родительским элементом
+     */
+    setupParentObserver(parent) {
+        if (!parent || parent === document.body) {
+            return; // Не наблюдаем за body или элементами без родителя
+        }
+
+        this.observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                for (const removedNode of mutation.removedNodes) {
+                    // Если удаленный узел - это наш элемент
+                    if (removedNode === this.element) {
+                        this.destroy();
+                        return;
+                    }
+                }
+            }
+        });
+
+        // Наблюдаем ТОЛЬКО за прямыми детьми родителя
+        this.observer.observe(parent, {
+            childList: true,
+            subtree: false // Важно: не смотрим внутрь родителя!
+        });
     }
 
     /**
@@ -128,7 +151,7 @@ export class Base {
      * @returns {Base|null} Экземпляр компонента или null
      */
     static getInstance(element) {
-        return this.instances[this.name]?.get(element);
+        return this.instances?.get(element);
     }
 
     /**
@@ -138,7 +161,7 @@ export class Base {
      */
     static getBySelector(selector) {
         const element = document.querySelector(selector);
-        return element ? this.instances[this.name].get(element) : null;
+        return element ? this.instances.get(element) : null;
     }
 
     /**
@@ -151,7 +174,7 @@ export class Base {
         const instances = [];
 
         elements.forEach(element => {
-            const instance = this.instances[this.name].get(element);
+            const instance = this.instances.get(element);
             if (instance) {
                 instances.push(instance);
             }
@@ -165,14 +188,19 @@ export class Base {
      * @returns {Base[]} Массив экземпляров
      */
     static getAll() {
-        return this.instances[this.name] ? Array.from(this.instances[this.name].values()) : [];
+        return this.instances ? Array.from(this.instances.values()) : [];
     }
 
     /**
      * Уничтожает компонент, удаляя его из хранилища экземпляров
+     * отписки от наблюдателя
      */
     destroy() {
-        this.constructor.instances[this.name]?.delete(this.element);
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = null;
+        }
+        this.constructor.instances?.delete(this.element);
     }
 
     /**
