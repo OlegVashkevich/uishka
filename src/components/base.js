@@ -27,35 +27,38 @@ export class Base {
         // Сохраняем экземпляр
         this.constructor.instances.set(element, this);
 
-        // Наблюдаем только за непосредственным родителем
-        this.setupParentObserver(element.parentElement);
+        this.constructor.setupMutationSignal();
     }
 
 
-    /**
-     * Наблюдение за родительским элементом
-     */
-    setupParentObserver(parent) {
-        if (!parent || parent === document.body) {
-            return; // Не наблюдаем за body или элементами без родителя
-        }
-
-        this.observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                for (const removedNode of mutation.removedNodes) {
-                    // Если удаленный узел - это наш элемент
-                    if (removedNode === this.element) {
-                        this.destroy();
-                        return;
+    static setupMutationSignal() {
+        this.globalObserver = new MutationObserver((mutations) => {
+            // Быстрая проверка: есть ли вообще удаления?
+            const hasRemovals = mutations.some(mutation => 
+                mutation.removedNodes.length > 0
+            );
+            
+            if (hasRemovals) {
+                if (!this.instances || this.instances.size === 0) return;
+                let cleanedCount = 0;
+                for (const [element, instance] of this.instances) {
+                    if (!document.body.contains(element)) {
+                        instance.destroy();
+                        cleanedCount++;
                     }
+                }
+                if (cleanedCount > 0) {
+                    console.log(`Cleaned ${cleanedCount} orphaned instances`);
                 }
             }
         });
 
-        // Наблюдаем ТОЛЬКО за прямыми детьми родителя
-        this.observer.observe(parent, {
-            childList: true,
-            subtree: false // Важно: не смотрим внутрь родителя!
+        // МИНИМАЛЬНЫЕ настройки для нашей задачи
+        this.globalObserver.observe(document.body, {
+            childList: true,    // ← нужно для обнаружения удалений
+            subtree: true,      // ← нужно для удалений внутри body
+            attributes: false,  // ← не нужно
+            characterData: false // ← не нужно
         });
     }
 
@@ -196,10 +199,6 @@ export class Base {
      * отписки от наблюдателя
      */
     destroy() {
-        if (this.observer) {
-            this.observer.disconnect();
-            this.observer = null;
-        }
         this.constructor.instances?.delete(this.element);
     }
 
