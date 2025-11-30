@@ -30,20 +30,6 @@ export class Base {
          */
         this.element = element;
 
-        /**
-         * Конфигурация реактивных свойств
-         * @type {Object}
-         * @private
-         */
-        this._propertiesConfig = {};
-
-        /**
-         * Хранилище значений реактивных свойств
-         * @type {Object}
-         * @private
-         */
-        this._reactiveProperties = {};
-
         // Сохраняем экземпляр
         this.constructor.instances.set(element, this);
     }
@@ -64,85 +50,47 @@ export class Base {
      * this.addReactiveProperty('imageSrc', '.card__img', 'src');
      */
     addReactiveProperty(name, selector, propertyType = 'textContent') {
-        this._propertiesConfig[name] = [selector, propertyType];
-        this._reactiveProperties[name] = this._getInitialValue(name);
+        if (!this.reactive) {
+            this.reactive = {};
+        }
+        // Находим целевой элемент один раз при инициализации
+        const targetElement = !selector || selector === 'this' ?
+            this.element :
+            this.element.querySelector(selector);
 
-        Object.defineProperty(this, name, {
-            get: () => this._reactiveProperties[name],
-            set: (value) => {
-                if (this._reactiveProperties[name] !== value) {
-                    this._reactiveProperties[name] = value;
-                    this._updatePropertyInDOM(name, value);
+        if (!targetElement) {
+            console.warn(`Element not found for selector: ${selector}`);
+            return this;
+        }
+
+        Object.defineProperty(this.reactive, name, {
+            get: () => {
+                switch (propertyType) {
+                    case 'innerHTML':
+                        return targetElement.innerHTML || '';
+                    case 'textContent':
+                        return targetElement.textContent || '';
+                    default:
+                        return targetElement.getAttribute(propertyType) || '';
                 }
-            }
+            },
+            set: (value) => {
+                switch (propertyType) {
+                    case 'innerHTML':
+                        return targetElement.innerHTML = value;
+                    case 'textContent':
+                        return targetElement.textContent = value;
+                    default:
+                        return targetElement.setAttribute(propertyType, value);
+                }
+            },
+            enumerable: true,
+            configurable: true
         });
+
         return this;
     }
 
-    /**
-     * Получает начальное значение свойства из DOM
-     * @param {string} property - Имя свойства
-     * @returns {string} Начальное значение
-     * @private
-     */
-    _getInitialValue(property) {
-        const config = this._propertiesConfig[property];
-
-        if (Array.isArray(config)) {
-            const [selector, propertyType] = config;
-            // Если селектор пустой или null - используем сам элемент
-            const element = !selector || selector === 'this' ? 
-                this.element : 
-                this.element.querySelector(selector);
-
-            if (!element) return '';
-
-            switch (propertyType) {
-                case 'innerHTML':
-                    return element.innerHTML || '';
-                case 'textContent':
-                    return element.textContent || '';
-                default:
-                    // Все остальные случаи считаем атрибутами
-                    return element.getAttribute(propertyType) || '';
-            }
-        }
-
-        return '';
-    }
-
-    /**
-     * Обновляет значение свойства в DOM
-     * @param {string} property - Имя свойства
-     * @param {string} value - Новое значение
-     * @private
-     */
-    _updatePropertyInDOM(property, value) {
-        const config = this._propertiesConfig[property];
-        if (!config) return;
-
-        if (Array.isArray(config)) {
-            const [selector, propertyType] = config;
-            // Если селектор пустой или null - используем сам элемент
-            const element = !selector || selector === 'this' ? 
-                this.element : 
-                this.element.querySelector(selector);
-                
-            if (!element) return;
-
-            switch (propertyType) {
-                case 'innerHTML':
-                    element.innerHTML = value;
-                    break;
-                case 'textContent':
-                    element.textContent = value;
-                    break;
-                default:
-                    // Все остальные случаи считаем атрибутами
-                    element.setAttribute(propertyType, value);
-            }
-        }
-    }
 
     /**
      * Показывает компонент (убирает display: none)
@@ -223,5 +171,13 @@ export class Base {
      */
     destroy() {
         this.constructor.instances?.delete(this.element);
+    }
+
+    /**
+     * Замораживает объект, запрещая добавление новых свойств
+     */
+    freeze() {
+        Object.seal(this);
+        return this;
     }
 }

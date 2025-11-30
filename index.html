@@ -147,16 +147,16 @@
 
                     console.log(cardInstance)
                     // Изменение title автоматически обновит DOM
-                    cardInstance.title = 'Новый заголовок карточки'
+                    cardInstance.reactive.title = 'Новый заголовок карточки'
 
                     // Получение текущего значения
-                    console.log(cardInstance.title) // 'Новый заголовок карточки'
+                    console.log(cardInstance.reactive.title) // 'Новый заголовок карточки'
 
-                    cardInstance.body = '<p>Новое содержимое карточки.</p><p>Новое содержимое карточки.</p>'
-                    cardInstance.footer = '<p>Содержимое карточки. Здесь может быть любой контент.</p>'
+                    cardInstance.reactive.body = '<p>Новое содержимое карточки.</p><p>Новое содержимое карточки.</p>'
+                    cardInstance.reactive.footer = '<p>Содержимое карточки. Здесь может быть любой контент.</p>'
 
                     // Атрибут карточки
-                    cardInstance.datatest = "test2"
+                    cardInstance.reactive.datatest = "test2"
                 });
             }, 5000);
         })

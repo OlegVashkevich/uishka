@@ -6,95 +6,85 @@
 
 :root {
 
-   --prefix: #{$prefix}; 
+    --prefix: #{$prefix};
 
-  /* ==========================================================================
+    /* ==========================================================================
      ЦВЕТОВАЯ ПАЛИТРА
      ========================================================================== */
-  
-  // Основные цвета бренда
-  --color-primary: #007bff;
-  --color-secondary: #6c757d;
-  
-  // Семантические цвета для состояний
-  --color-success: #28a745;
-  --color-danger: #dc3545;
-  --color-warning: #ffc107;
-  --color-info: #17a2b8;
-  
-  // Оттенки серого для текста и фонов
-  --color-light: #f8f9fa;
-  --color-dark: #343a40;
-  
-  /* ==========================================================================
+
+    @each $name, $color in $brand-colors {
+        --color-#{$name}: #{$color};
+    }
+
+    /* ==========================================================================
      РАССТОЯНИЯ И ОТСТУПЫ (SPACING SYSTEM)
      ========================================================================== */
-  
-  // Шкала отступов (основана на 4px grid system)
-  --spacing-xs: #{$spacing-base * 1};    // 4px
-  --spacing-sm: #{$spacing-base * 2};    // 8px
-  --spacing-md: #{$spacing-base * 4};    // 16px
-  --spacing-lg: #{$spacing-base * 6};    // 24px
-  --spacing-xl: #{$spacing-base * 8};    // 32px
-  --spacing-xxl: #{$spacing-base * 12};  // 48px
-  
-  /* ==========================================================================
+
+    // Шкала отступов (основана на 4px grid system)
+    --spacing-xs: #{$spacing-base * 1}; // 4px
+    --spacing-sm: #{$spacing-base * 2}; // 8px
+    --spacing-md: #{$spacing-base * 4}; // 16px
+    --spacing-lg: #{$spacing-base * 6}; // 24px
+    --spacing-xl: #{$spacing-base * 8}; // 32px
+    --spacing-xxl: #{$spacing-base * 12}; // 48px
+
+    /* ==========================================================================
      СКРУГЛЕНИЯ УГЛОВ (BORDER RADIUS)
      ========================================================================== */
-  
-  // Шкала скруглений углов
-  --border-radius-sm: #{$spacing-base * 1};    // 4px
-  --border-radius-md: #{$spacing-base * 1.5};  // 6px
-  --border-radius-lg: #{$spacing-base * 2};    // 8px
-  --border-radius-xl: #{$spacing-base * 3};    // 12px
-  --border-radius-pill: 50px;
-  --border-radius-circle: 50%;
-  
-  /* ==========================================================================
+
+    // Шкала скруглений углов
+    --border-radius-sm: #{$spacing-base * 1}; // 4px
+    --border-radius-md: #{$spacing-base * 1.5}; // 6px
+    --border-radius-lg: #{$spacing-base * 2}; // 8px
+    --border-radius-xl: #{$spacing-base * 3}; // 12px
+    --border-radius-pill: 50px;
+    --border-radius-circle: 50%;
+
+    /* ==========================================================================
      ТИПОГРАФИКА
      ========================================================================== */
-  
-  // Размеры шрифтов
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 20px;
-  
-  // Межстрочные интервалы
-  --line-height-tight: 1.25;
-  --line-height-normal: 1.5;
-  --line-height-loose: 1.75;
-  
-  // Насыщенность шрифта
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  
-  /* ==========================================================================
+
+    // Размеры шрифтов
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+
+    // Межстрочные интервалы
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-loose: 1.75;
+
+    // Насыщенность шрифта
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* ==========================================================================
      ТЕНИ (BOX SHADOWS)
      ========================================================================== */
-  
-  // Шкала теней для создания глубины
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-  
-  /* ==========================================================================
+
+    // Шкала теней для создания глубины
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+    /* ==========================================================================
      АНИМАЦИИ И ТРАНЗИЦИИ
      ========================================================================== */
-  
-  // Длительности анимаций
-  --duration-fast: 0.15s;
-  --duration-normal: 0.3s;
-  --duration-slow: 0.5s;
-  
-  // Функции плавности (timing functions)
-  --easing-linear: linear;
-  --easing-ease: ease;
-  --easing-ease-in: ease-in;
-  --easing-ease-out: ease-out;
-  --easing-ease-in-out: ease-in-out;
+
+    // Длительности анимаций
+    --duration-fast: 0.15s;
+    --duration-normal: 0.3s;
+    --duration-slow: 0.5s;
+
+    // Функции плавности (timing functions)
+    --easing-linear: linear;
+    --easing-ease: ease;
+    --easing-ease-in: ease-in;
+    --easing-ease-out: ease-out;
+    --easing-ease-in-out: ease-in-out;
 }
