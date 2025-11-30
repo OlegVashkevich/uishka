@@ -1,6 +1,6 @@
 /**
  * Класс карточки UI компонента
- * @extends UIComponent
+ * @extends Base
  * @class
  * @classdesc Компонент карточки с реактивными свойствами для управления содержимым
  * 
@@ -14,11 +14,11 @@
  * @param {HTMLElement} element - DOM элемент карточки
  */
 import './card.scss'
-import { UIComponent } from '/src/uicomponent.js'
+import { Base } from '../base.js'
 
 const PREFIX = 'uishka'
 
-export class Card extends UIComponent {
+export class Card extends Base {
     /**
      * Создает экземпляр карточки
      * @param {HTMLElement} element - DOM элемент карточки

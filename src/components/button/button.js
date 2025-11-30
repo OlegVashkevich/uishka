@@ -1,9 +1,9 @@
 import './button.scss'
-import { UIComponent } from './../../uicomponent.js'
+import { Base } from '../base.js'
 
 const PREFIX = 'uishka'
 
-export class Button extends UIComponent {
+export class Button extends Base {
     constructor(element) {
         super(element);
 

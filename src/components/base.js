@@ -2,21 +2,21 @@
  * Базовый абстрактный класс для всех UI компонентов
  * @abstract
  */
-export class UIComponent {
+export class Base {
     /**
      * Map всех экземпляров компонентов (статическое, общее для всех наследников)
-     * @type {Map<Element, UIComponent>}
+     * @type {Map<Element, Base>}
      */
     static instances = new Map();
 
     /**
      * Создает экземпляр UI компонента
      * @param {Element} element - DOM элемент, к которому привязывается компонент
-     * @throws {Error} Если попытаться создать экземпляр UIComponent напрямую
+     * @throws {Error} Если попытаться создать экземпляр Base напрямую
      */
     constructor(element) {
-        if (this.constructor === UIComponent) {
-            throw new Error('UIComponent is abstract and cannot be instantiated directly');
+        if (this.constructor === Base) {
+            throw new Error('Base is abstract and cannot be instantiated directly');
         }
 
         // Инициализируем instances если его еще нет у наследника
@@ -175,7 +175,7 @@ export class UIComponent {
     /**
      * Получает экземпляр компонента по DOM элементу
      * @param {Element} element - DOM элемент
-     * @returns {UIComponent|null} Экземпляр компонента или null
+     * @returns {Base|null} Экземпляр компонента или null
      */
     static getInstance(element) {
         return this.instances?.get(element);
@@ -184,7 +184,7 @@ export class UIComponent {
     /**
      * Получает первый экземпляр компонента по CSS селектору
      * @param {string} selector - CSS селектор
-     * @returns {UIComponent|null} Экземпляр компонента или null
+     * @returns {Base|null} Экземпляр компонента или null
      */
     static getBySelector(selector) {
         const element = document.querySelector(selector);
@@ -194,7 +194,7 @@ export class UIComponent {
     /**
      * Получает все экземпляры компонентов по CSS селектору
      * @param {string} selector - CSS селектор
-     * @returns {UIComponent[]} Массив экземпляров компонентов
+     * @returns {Base[]} Массив экземпляров компонентов
      */
     static getAllBySelector(selector) {
         const elements = document.querySelectorAll(selector);
@@ -212,7 +212,7 @@ export class UIComponent {
 
     /**
      * Получает все экземпляры компонента
-     * @returns {UIComponent[]} Массив экземпляров
+     * @returns {Base[]} Массив экземпляров
      */
     static getAll() {
         return this.instances ? Array.from(this.instances.values()) : [];

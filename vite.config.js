@@ -8,11 +8,10 @@ const addTimestampPlugin = () => {
   return {
     name: 'add-timestamp',
     transformIndexHtml(html) {
-      // Добавляем timestamp ко всем скриптам и стилям
       return html
-        .replace(/(src="[^"]*\.js")/g, `$1?t=${timestamp}`)
-        .replace(/(href="[^"]*\.css")/g, `$1?t=${timestamp}`)
-        .replace(/(href="[^"]*\.js")/g, `$1?t=${timestamp}`); // для modulepreload
+        .replace(/src="([^"]*\.js)"/g, `src="$1?t=${timestamp}"`)
+        .replace(/href="([^"]*\.css)"/g, `href="$1?t=${timestamp}"`)
+        .replace(/href="([^"]*\.js)"/g, `href="$1?t=${timestamp}"`); // для modulepreload
     }
   }
 }
@@ -22,7 +21,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     minify: 'esbuild',
-    sourcemap: 'inline',
+    sourcemap: true,
     // Добавляем настройку для выходных файлов
     rollupOptions: {
       input: {
@@ -33,6 +32,7 @@ export default defineConfig({
         reset: resolve(__dirname, 'src/styles/reset.scss'),
         animations: resolve(__dirname, 'src/styles/animations.scss'),
         // Компоненты
+        base: resolve(__dirname, 'src/components/base.js'),
         button: resolve(__dirname, 'src/components/button/button.js'),
         card: resolve(__dirname, 'src/components/card/card.js'),
       },
@@ -40,6 +40,9 @@ export default defineConfig({
         entryFileNames: (entryInfo) => {
           if (entryInfo.name === 'all' || entryInfo.name.includes('all')) {
             return 'all.js';
+          }
+          if (entryInfo.name === 'base' || entryInfo.name.includes('base')) {
+            return 'components/base.js';
           }
           return 'components/[name].js'
         },
