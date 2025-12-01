@@ -27,39 +27,20 @@ export class Base {
         // Сохраняем экземпляр
         this.constructor.instances.set(element, this);
 
-        this.constructor.setupMutationSignal();
-    }
-
-
-    static setupMutationSignal() {
-        this.globalObserver = new MutationObserver((mutations) => {
-            // Быстрая проверка: есть ли вообще удаления?
-            const hasRemovals = mutations.some(mutation => 
-                mutation.removedNodes.length > 0
+        
+        // ТРЕБУЕМ ЯВНОГО УКАЗАНИЯ SELECTOR
+        if (!this.constructor.selector) {
+            throw new Error(
+                `${this.constructor.name} must define static property 'selector'. ` +
+                `Example: static selector = '.my-component';`
             );
-            
-            if (hasRemovals) {
-                if (!this.instances || this.instances.size === 0) return;
-                let cleanedCount = 0;
-                for (const [element, instance] of this.instances) {
-                    if (!document.body.contains(element)) {
-                        instance.destroy();
-                        cleanedCount++;
-                    }
-                }
-                if (cleanedCount > 0) {
-                    console.log(`Cleaned ${cleanedCount} orphaned instances`);
-                }
-            }
-        });
+        }
 
-        // МИНИМАЛЬНЫЕ настройки для нашей задачи
-        this.globalObserver.observe(document.body, {
-            childList: true,    // ← нужно для обнаружения удалений
-            subtree: true,      // ← нужно для удалений внутри body
-            attributes: false,  // ← не нужно
-            characterData: false // ← не нужно
-        });
+        // Кеширование класса для обнаружения компонентов
+        if (!Base._classesCache) {
+            Base._classesCache = new Map();
+        }
+        Base._classesCache.set(this.constructor, this.constructor);
     }
 
     /**
@@ -91,32 +72,95 @@ export class Base {
             return this;
         }
 
-        Object.defineProperty(this.reactive, name, {
-            get: () => {
-                switch (propertyType) {
-                    case 'innerHTML':
-                        return targetElement.innerHTML || '';
-                    case 'textContent':
-                        return targetElement.textContent || '';
-                    default:
-                        return targetElement.getAttribute(propertyType) || '';
-                }
-            },
-            set: (value) => {
-                switch (propertyType) {
-                    case 'innerHTML':
-                        return targetElement.innerHTML = value;
-                    case 'textContent':
-                        return targetElement.textContent = value;
-                    default:
-                        return targetElement.setAttribute(propertyType, value);
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
+        if (propertyType === 'innerHTML') {
+            Object.defineProperty(this.reactive, name, {
+                get: () => targetElement.innerHTML || '',
+                set: (value) => {
+                    // 1. Уничтожаем все компоненты внутри целевого элемента
+                    this._destroyComponentsInElement(targetElement);
+                    
+                    // 2. Устанавливаем новое содержимое
+                    targetElement.innerHTML = value;
+                    
+                    // 3. Инициализируем новые компоненты внутри целевого элемента
+                    this._initializeComponentsInElement(targetElement);
+                    
+                    return value;
+                },
+                enumerable: true,
+                configurable: true
+            });
+        } else {
+            Object.defineProperty(this.reactive, name, {
+                get: () => {
+                    switch (propertyType) {
+                        case 'textContent':
+                            return targetElement.textContent || '';
+                        default:
+                            return targetElement.getAttribute(propertyType) || '';
+                    }
+                },
+                set: (value) => {
+                    switch (propertyType) {
+                        case 'textContent':
+                            return targetElement.textContent = value;
+                        default:
+                            return targetElement.setAttribute(propertyType, value);
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+        }
 
         return this;
+    }
+
+    /**
+     * Уничтожает все компоненты внутри указанного элемента
+     * @param {Element} element - Родительский элемент
+     * @private
+     */
+    _destroyComponentsInElement(element) {
+        if (!Base._classesCache) return;
+        
+        for (const ComponentClass of Base._classesCache.keys()) {
+            if (ComponentClass.selector && ComponentClass.instances) {
+                const componentElements = element.querySelectorAll(ComponentClass.selector);
+                
+                componentElements.forEach(componentElement => {
+                    const instance = ComponentClass.getInstance(componentElement);
+                    if (instance) {
+                        instance.destroy();
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Инициализирует все компоненты внутри указанного элемента
+     * @param {Element} element - Родительский элемент
+     * @private
+     */
+    _initializeComponentsInElement(element) {
+        if (!Base._classesCache) return;
+        
+        for (const ComponentClass of Base._classesCache.keys()) {
+            if (ComponentClass.selector) {
+                const componentElements = element.querySelectorAll(ComponentClass.selector);
+                
+                componentElements.forEach(componentElement => {
+                    if (ComponentClass.instances && !ComponentClass.instances.has(componentElement)) {
+                        try {
+                            new ComponentClass(componentElement);
+                        } catch (error) {
+                            console.warn(`Failed to initialize component ${ComponentClass.name}:`, error);
+                        }
+                    }
+                });
+            }
+        }
     }
 
 

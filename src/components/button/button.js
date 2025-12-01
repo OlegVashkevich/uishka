@@ -4,6 +4,7 @@ import { Base } from '../base.js'
 const PREFIX = 'uishka'
 
 export class Button extends Base {
+    static selector = '.' + PREFIX + '-btn';
     constructor(element) {
         super(element);
 
@@ -46,7 +47,7 @@ export class Button extends Base {
 
 // Автоматическая инициализация всех кнопок с data-ui-button
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.' + PREFIX + '-btn').forEach(button => {
+    document.querySelectorAll(Button.selector).forEach(button => {
         new Button(button);
     });
 });

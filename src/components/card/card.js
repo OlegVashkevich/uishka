@@ -19,13 +19,15 @@ import { Base } from '../base.js'
 const PREFIX = 'uishka'
 
 export class Card extends Base {
+
+    static selector = '.' + PREFIX + '-card';
+
     /**
      * Создает экземпляр карточки
      * @param {HTMLElement} element - DOM элемент карточки
      */
     constructor(element) {
         super(element);
-
         /**
          * Добавляет реактивное свойство для заголовка карточки
          * @type {ReactiveProperty}
@@ -42,7 +44,7 @@ export class Card extends Base {
  * и добавляет реактивные свойства для различных частей карточки
  */
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.' + PREFIX + '-card').forEach(card => {
+    document.querySelectorAll(Card.selector).forEach(card => {
         new Card(card)
     });
 });
