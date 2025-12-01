@@ -13,7 +13,8 @@ export class Button extends Base {
         this.text = this.element.textContent;
 
         // Добавляем обработчик клика
-        this.element.addEventListener('click', this.handleClick.bind(this));
+        //this.element.addEventListener('click', this.handleClick.bind(this));
+        this.on(this.element, 'click', this.handleClick);
     }
 
     handleClick(event) {

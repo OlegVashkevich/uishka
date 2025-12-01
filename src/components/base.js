@@ -24,10 +24,12 @@ export class Base {
          */
         this.element = element;
 
+        this._events = [];
+
         // Сохраняем экземпляр
         this.constructor.instances.set(element, this);
 
-        
+
         // ТРЕБУЕМ ЯВНОГО УКАЗАНИЯ SELECTOR
         if (!this.constructor.selector) {
             throw new Error(
@@ -239,10 +241,37 @@ export class Base {
     }
 
     /**
+     * Добавляет обработчик события с автоматической очисткой
+     * @param {EventTarget} target - Цель события
+     * @param {string} event - Имя события
+     * @param {Function} handler - Функция-обработчик
+     * @param {AddEventListenerOptions|boolean} [options] - Опции
+     * @returns {Function} Возвращает bound обработчик
+     */
+    on(target, event, handler, options) {
+        const boundHandler = handler.bind(this);
+        target.addEventListener(event, boundHandler, options);
+        this._events.push({ target, event, handler: boundHandler, options });
+        return boundHandler;
+    }
+
+    /**
+     * Удаляет все обработчики событий компонента
+     * @private
+     */
+    _clearEvents() {
+        this._events.forEach(({ target, event, handler, options }) => {
+            target.removeEventListener(event, handler, options);
+        });
+        this._events = [];
+    }
+
+    /**
      * Уничтожает компонент, удаляя его из хранилища экземпляров
      * отписки от наблюдателя
      */
     destroy() {
+        this._clearEvents();
         this.constructor.instances?.delete(this.element);
     }
 
