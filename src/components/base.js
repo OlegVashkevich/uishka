@@ -194,6 +194,11 @@ export class Base {
         this.element.disabled = true;
     }
 
+    remove() {
+        this.destroy();
+        this.element.remove();
+    }
+
     /**
      * Получает экземпляр компонента по DOM элементу
      * @param {Element} element - DOM элемент
@@ -241,6 +246,15 @@ export class Base {
     }
 
     /**
+     * Получает полное имя события для экземпляра
+     * @param {string} eventName - Базовое имя события
+     * @returns {string} Полное имя события
+     */
+    getEventName(eventName) {
+        return `uie-${this.constructor.name.toLowerCase()}-${eventName}`;
+    }
+
+    /**
      * Добавляет обработчик события с автоматической очисткой
      * @param {EventTarget} target - Цель события
      * @param {string} event - Имя события
@@ -251,8 +265,44 @@ export class Base {
     on(target, event, handler, options) {
         const boundHandler = handler.bind(this);
         target.addEventListener(event, boundHandler, options);
-        this._events.push({ target, event, handler: boundHandler, options });
+        this._events.push({ target, event, handler: boundHandler, eventName: this.getEventName(event), options });
         return boundHandler;
+    }
+
+    /**
+     * Создает и диспатчит кастомное событие
+     * @param {string} eventName - Имя события (без префикса ui-)
+     * @param {Object} detail - Дополнительные данные события
+     * @param {boolean} bubbles - Всплывает ли событие
+     * @returns {CustomEvent} Созданное событие
+     */
+    emit(eventName, detail = {}, bubbles = true) {
+        const event = new CustomEvent(this.getEventName(eventName), {
+            detail: {
+                timestamp: Date.now(),
+                component: this,
+                ...detail
+            },
+            bubbles
+        });
+        this.element.dispatchEvent(event);
+        return event;
+    }
+
+    // Специализированный метод для генерации событий
+    emitOn(target, domEvent, customEvent, options = {}) {
+        return this.on(target, domEvent, (event) => {
+            // Вызов кастомного handler если есть
+            if (options.handler) {
+                options.handler.call(this, event);
+            }
+            
+            // Автоматическая генерация события
+            this.emit(customEvent, {
+                originalEvent: event,
+                ...options.detail
+            }, options.bubbles !== false);
+        }, options.listenerOptions);
     }
 
     /**

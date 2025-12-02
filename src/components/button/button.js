@@ -14,23 +14,26 @@ export class Button extends Base {
 
         // Добавляем обработчик клика
         //this.element.addEventListener('click', this.handleClick.bind(this));
-        this.on(this.element, 'click', this.handleClick);
+        //this.on(this.element, 'click', this.handleClick);
+        // С обработчиком и данными
+        this.emitOn(this.element, 'click', 'click-clack', {
+            handler: (event) => {
+                this.clickCount++;
+                console.log('Клик зарегистрирован');
+            },
+            detail: { buttonType: 'primary' },
+            bubbles: true
+        });
     }
 
-    handleClick(event) {
+    /*handleClick(event) {
         if (this.element.disabled) return;
 
         // Создаем кастомное событие
         this.clickCount++;
-        const uievent = new CustomEvent('ui-button-click', {
-            detail: {
-                timestamp: Date.now(),
-                component: this
-            },
-            bubbles: true
-        });
-        this.element.dispatchEvent(uievent);
-    }
+
+        this.emit('click-clack');
+    }*/
 
     // Показать загрузку
     loading() {

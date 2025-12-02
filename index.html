@@ -128,11 +128,13 @@
             }, 3000);
         }
         // Тестируем обработчики событий
-        document.addEventListener('ui-button-click', (event) => {
+        document.addEventListener('uie-button-click-clack', (event) => {
             console.log('Кнопка нажата!', event.detail.component.element)
-            console.log('Кнопка нажата ${event.detail.component.clickCount} раз')
+            console.log('Кнопка нажата ',event.detail.component.clickCount,' раз')
             event.detail.component.loading();
             event.detail.component.pulse();
+            console.log(event.detail.component._events)
+            console.log(event.detail.component._custom_events)
         })
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
